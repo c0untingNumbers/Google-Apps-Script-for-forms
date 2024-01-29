@@ -1,0 +1,42 @@
+// base template by Rinlama on Github
+// modified by c0untingNumbers on Github
+
+function Submit() {
+  //  add your discord Webhook Endpoint
+  const webhooks = "";
+
+  const form = FormApp.getActiveForm();
+  const allResponses = form.getResponses();
+  const latestResponse = allResponses[allResponses.length - 1];
+  const response = latestResponse.getItemResponses();
+  const email = latestResponse.getRespondentEmail();
+  let content = "";
+
+  for (var i = 0; i < response.length; i++) {
+    const question = response[i].getItem().getTitle();
+    const answer = response[i].getResponse();
+    content += `**${question}**\n${answer}\n`; // silly discord markdowns here if you want to modify it
+  }
+
+  const options = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    muteHttpExceptions: false,
+    payload: JSON.stringify({
+      // Uncomment next line if you want message content before the embed
+      //content: `Message content`,
+      embeds: [
+        {
+          title: form.getTitle(),
+          description: content,
+          timestamp: new Date().toISOString(),
+        },
+      ],
+    }),
+  };
+  try {
+    UrlFetchApp.fetch(webhooks, options);
+  } catch (error) {
+    console.log(error);
+  }
+}
