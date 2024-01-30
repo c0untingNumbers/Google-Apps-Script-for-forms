@@ -23,6 +23,8 @@ function Submit() {
     headers: { "Content-Type": "application/json" },
     muteHttpExceptions: false,
     payload: JSON.stringify({
+      // To ping specific roles, use <@&RoleID>
+      // Replace the RoleID with the ID NOT THE NAME of the role
       // Uncomment next line if you want message content before the embed
       //content: `Message content`,
       embeds: [
